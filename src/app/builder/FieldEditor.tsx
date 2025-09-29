@@ -88,21 +88,26 @@ export default function FieldEditor({ field, onSave, onCancel }: Props) {
     }
 
     const needsOptions = FIELD_TYPE_INFO[editedField.type].needsOptions
-    const inputClasses = "w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
 
     return (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn">
+            <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-scaleIn">
                 {/* Header */}
-                <div className="sticky top-0 bg-gradient-to-r from-blue-500 to-purple-500 p-6 text-white">
-                    <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center text-2xl">
+                <div className="sticky top-0 bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white">
+                    <div className="flex items-center gap-4">
+                        <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center text-3xl">
                             {FIELD_TYPE_INFO[editedField.type].emoji}
                         </div>
-                        <div>
+                        <div className="flex-1">
                             <h2 className="text-2xl font-bold">Feld bearbeiten</h2>
-                            <p className="text-blue-100 text-sm mt-0.5">Konfiguriere dein Formular-Feld</p>
+                            <p className="text-blue-100 text-sm mt-1">Konfiguriere dein Formular-Feld</p>
                         </div>
+                        <button
+                            onClick={onCancel}
+                            className="w-10 h-10 flex items-center justify-center hover:bg-white/20 rounded-lg transition"
+                        >
+                            <span className="text-2xl">×</span>
+                        </button>
                     </div>
                 </div>
 
@@ -121,7 +126,7 @@ export default function FieldEditor({ field, onSave, onCancel }: Props) {
                                     setOptionsText('')
                                 }
                             }}
-                            className={inputClasses}
+                            className="input-base"
                         >
                             {(Object.entries(FIELD_TYPE_INFO) as [FieldType, typeof FIELD_TYPE_INFO[FieldType]][]).map(
                                 ([type, info]) => (
@@ -142,7 +147,7 @@ export default function FieldEditor({ field, onSave, onCancel }: Props) {
                             type="text"
                             value={editedField.label}
                             onChange={(e) => setEditedField({ ...editedField, label: e.target.value })}
-                            className={inputClasses}
+                            className="input-base"
                             placeholder="z.B. Telefonnummer"
                         />
                         <p className="text-xs text-gray-500 mt-1.5">Der Text, der dem Nutzer angezeigt wird</p>
@@ -157,10 +162,12 @@ export default function FieldEditor({ field, onSave, onCancel }: Props) {
                             type="text"
                             value={editedField.key}
                             onChange={(e) => setEditedField({ ...editedField, key: e.target.value })}
-                            className={`${inputClasses} font-mono text-sm`}
+                            className="input-base font-mono text-sm"
                             placeholder="z.B. contact_phone"
                         />
-                        <p className="text-xs text-gray-500 mt-1.5">Eindeutiger Identifier (nur Kleinbuchstaben, Zahlen, Unterstriche)</p>
+                        <p className="text-xs text-gray-500 mt-1.5">
+                            Eindeutiger Identifier (nur Kleinbuchstaben, Zahlen, Unterstriche)
+                        </p>
                     </div>
 
                     {/* Beschreibung */}
@@ -171,7 +178,7 @@ export default function FieldEditor({ field, onSave, onCancel }: Props) {
                         <textarea
                             value={editedField.description}
                             onChange={(e) => setEditedField({ ...editedField, description: e.target.value })}
-                            className={inputClasses}
+                            className="input-base"
                             placeholder="Zusätzliche Hinweise für den Nutzer"
                             rows={2}
                         />
@@ -187,7 +194,7 @@ export default function FieldEditor({ field, onSave, onCancel }: Props) {
                                 type="text"
                                 value={editedField.placeholder}
                                 onChange={(e) => setEditedField({ ...editedField, placeholder: e.target.value })}
-                                className={inputClasses}
+                                className="input-base"
                                 placeholder="z.B. Hier eingeben..."
                             />
                         </div>
@@ -209,7 +216,7 @@ export default function FieldEditor({ field, onSave, onCancel }: Props) {
                                             min: e.target.value ? parseInt(e.target.value) : null,
                                         })
                                     }
-                                    className={inputClasses}
+                                    className="input-base"
                                     placeholder="0"
                                 />
                             </div>
@@ -226,7 +233,7 @@ export default function FieldEditor({ field, onSave, onCancel }: Props) {
                                             max: e.target.value ? parseInt(e.target.value) : null,
                                         })
                                     }
-                                    className={inputClasses}
+                                    className="input-base"
                                     placeholder="100"
                                 />
                             </div>
@@ -235,7 +242,7 @@ export default function FieldEditor({ field, onSave, onCancel }: Props) {
 
                     {/* Pflichtfeld */}
                     {editedField.type !== 'CHECKBOX' && (
-                        <label className="flex items-center gap-3 p-4 bg-gray-50 border border-gray-200 rounded-xl hover:bg-white hover:border-blue-300 cursor-pointer transition-all">
+                        <label className="flex items-center gap-3 p-4 bg-blue-50 border border-blue-200 rounded-xl hover:bg-blue-100 cursor-pointer transition-all">
                             <input
                                 type="checkbox"
                                 checked={editedField.required}
@@ -255,13 +262,13 @@ export default function FieldEditor({ field, onSave, onCancel }: Props) {
                             <textarea
                                 value={optionsText}
                                 onChange={(e) => setOptionsText(e.target.value)}
-                                className={`${inputClasses} font-mono text-sm`}
+                                className="input-base font-mono text-sm"
                                 placeholder="Eine Option pro Zeile&#10;Option 1&#10;Option 2&#10;Option 3"
                                 rows={6}
                             />
                             <p className="text-xs text-gray-500 mt-1.5">Jede Zeile wird zu einer Auswahloption</p>
                             {optionsText && (
-                                <div className="mt-3 p-4 bg-blue-50 border border-blue-100 rounded-xl">
+                                <div className="mt-3 p-4 bg-blue-50 border border-blue-200 rounded-xl">
                                     <p className="text-sm font-semibold text-blue-900 mb-2">Vorschau:</p>
                                     <div className="space-y-2">
                                         {optionsText
@@ -280,7 +287,7 @@ export default function FieldEditor({ field, onSave, onCancel }: Props) {
                     )}
 
                     {error && (
-                        <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
+                        <div className="p-4 bg-red-50 border-2 border-red-200 rounded-xl flex items-start gap-3">
                             <span className="text-xl flex-shrink-0">⚠️</span>
                             <span className="text-red-700 font-medium">{error}</span>
                         </div>
@@ -288,16 +295,16 @@ export default function FieldEditor({ field, onSave, onCancel }: Props) {
                 </div>
 
                 {/* Footer */}
-                <div className="sticky bottom-0 flex gap-3 p-6 bg-gray-50 border-t border-gray-100">
+                <div className="sticky bottom-0 flex gap-3 p-6 bg-gray-50 border-t border-gray-200">
                     <button
                         onClick={handleSave}
-                        className="flex-1 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-xl hover:shadow-lg hover:shadow-blue-500/50 transition-all hover:-translate-y-0.5"
+                        className="flex-1 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 hover:shadow-lg transition-all hover:-translate-y-0.5"
                     >
                         ✓ Speichern
                     </button>
                     <button
                         onClick={onCancel}
-                        className="px-8 py-3 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 font-semibold transition-all"
+                        className="px-8 py-3 bg-white border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all"
                     >
                         Abbrechen
                     </button>

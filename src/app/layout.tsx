@@ -5,11 +5,12 @@ import "./globals.css";
 const inter = Inter({
     subsets: ["latin"],
     display: "swap",
+    variable: '--font-inter',
 });
 
 export const metadata: Metadata = {
-    title: "FormBuilder - Erstelle Formulare einfach & schnell",
-    description: "Erstelle professionelle Formulare mit verschiedenen Feldtypen, Validierung und öffentlichen Links.",
+    title: "FormBuilder - Formulare für Handwerksbetriebe",
+    description: "Erstelle professionelle Formulare einfach & schnell - speziell für Handwerksbetriebe",
 };
 
 export default function RootLayout({
@@ -18,8 +19,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="de" className={inter.className}>
-        <body className="antialiased">{children}</body>
+        <html lang="de" className={inter.variable}>
+        <body className="antialiased font-sans bg-gray-50">{children}</body>
         </html>
     );
 }

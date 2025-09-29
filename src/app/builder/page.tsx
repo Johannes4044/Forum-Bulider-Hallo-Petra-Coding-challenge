@@ -146,44 +146,54 @@ export default function FormBuilderPage() {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* Header */}
+            {/* Navigation */}
             <nav className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-xl border-b border-gray-100">
-                <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+                <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition">
-                        <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/30">
-                            <span className="text-white text-lg font-bold">F</span>
+                        <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
+                            <span className="text-white text-xl font-bold">F</span>
                         </div>
-                        <span className="font-bold text-lg">FormBuilder</span>
+                        <span className="text-xl font-bold text-gray-900">FormBuilder</span>
                     </Link>
-                    <span className="text-sm text-gray-500">Formular erstellen</span>
+                    <span className="text-sm text-gray-500 hidden sm:block">Formular erstellen</span>
                 </div>
             </nav>
 
-            <main className="pt-24 pb-12 px-6">
+            <main className="pt-28 pb-12 px-6">
                 <div className="max-w-5xl mx-auto">
-                    <form onSubmit={handleSubmit} className="space-y-8">
-                        {/* Header Card */}
-                        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                            <div className="flex items-start gap-4 mb-8">
-                                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-blue-500/30">
-                                    <span className="text-2xl">✨</span>
+                    {/* Header */}
+                    <div className="mb-8 animate-slideDown">
+                        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
+                            Neues Formular erstellen
+                        </h1>
+                        <p className="text-lg text-gray-600">
+                            Füge Felder hinzu und konfiguriere dein Formular
+                        </p>
+                    </div>
+
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        {/* Basis-Info Card */}
+                        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8 animate-slideUp">
+                            <div className="flex items-center gap-4 mb-6">
+                                <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center">
+                                    <span className="text-3xl">✨</span>
                                 </div>
                                 <div>
-                                    <h1 className="text-2xl font-bold text-gray-900 mb-1">Neues Formular erstellen</h1>
-                                    <p className="text-gray-600">Füge Felder hinzu und konfiguriere dein Formular</p>
+                                    <h2 className="text-xl font-bold text-gray-900">Formular-Informationen</h2>
+                                    <p className="text-sm text-gray-500">Grundlegende Details zu deinem Formular</p>
                                 </div>
                             </div>
 
-                            <div className="space-y-6">
+                            <div className="space-y-5">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-900 mb-2">
-                                        Formular-Titel <span className="text-red-500">*</span>
+                                        Titel <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
                                         value={title}
                                         onChange={(e) => setTitle(e.target.value)}
-                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
+                                        className="input-base"
                                         placeholder="z.B. Kontaktanfrage"
                                     />
                                 </div>
@@ -195,7 +205,7 @@ export default function FormBuilderPage() {
                                     <textarea
                                         value={description}
                                         onChange={(e) => setDescription(e.target.value)}
-                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
+                                        className="input-base"
                                         placeholder="Kurze Beschreibung des Formulars"
                                         rows={3}
                                     />
@@ -203,8 +213,8 @@ export default function FormBuilderPage() {
                             </div>
                         </div>
 
-                        {/* Fields Card */}
-                        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                        {/* Felder Card */}
+                        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8 animate-slideUp" style={{ animationDelay: '0.1s' }}>
                             <div className="flex items-center justify-between mb-6">
                                 <div>
                                     <h2 className="text-xl font-bold text-gray-900">Formular-Felder</h2>
@@ -215,9 +225,9 @@ export default function FormBuilderPage() {
                                 <button
                                     type="button"
                                     onClick={addField}
-                                    className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-semibold rounded-lg hover:shadow-lg hover:shadow-blue-500/50 transition-all hover:-translate-y-0.5 flex items-center gap-2"
+                                    className="flex items-center gap-2 px-5 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 hover:shadow-lg hover:-translate-y-0.5 transition-all"
                                 >
-                                    <span className="text-lg leading-none">+</span>
+                                    <span className="text-xl leading-none">+</span>
                                     <span>Feld hinzufügen</span>
                                 </button>
                             </div>
@@ -226,55 +236,55 @@ export default function FormBuilderPage() {
                                 <button
                                     type="button"
                                     onClick={addField}
-                                    className="w-full py-16 border-2 border-dashed border-gray-200 rounded-xl hover:border-blue-300 hover:bg-blue-50/50 transition-all group"
+                                    className="w-full py-20 border-2 border-dashed border-gray-300 rounded-2xl hover:border-blue-400 hover:bg-blue-50 transition-all group"
                                 >
-                                    <div className="text-5xl mb-3 group-hover:scale-110 transition-transform">📝</div>
-                                    <p className="text-gray-900 font-medium mb-1">Noch keine Felder vorhanden</p>
-                                    <p className="text-sm text-gray-500">Klicke hier um dein erstes Feld hinzuzufügen</p>
+                                    <div className="text-6xl mb-4 group-hover:scale-110 transition-transform">📝</div>
+                                    <p className="text-lg font-semibold text-gray-900 mb-1">Noch keine Felder vorhanden</p>
+                                    <p className="text-gray-500">Klicke hier um dein erstes Feld hinzuzufügen</p>
                                 </button>
                             ) : (
                                 <div className="space-y-3">
                                     {fields.map((field, index) => (
                                         <div
                                             key={field.tempId}
-                                            className="group relative bg-gray-50 rounded-xl p-5 hover:bg-white hover:shadow-md border border-transparent hover:border-gray-200 transition-all"
+                                            className="group bg-gray-50 rounded-xl p-5 hover:bg-white hover:shadow-md border border-transparent hover:border-gray-200 transition-all"
                                         >
                                             <div className="flex items-start gap-4">
-                                                <div className="text-2xl flex-shrink-0">{FIELD_ICONS[field.type]}</div>
+                                                <div className="text-3xl flex-shrink-0 mt-1">{FIELD_ICONS[field.type]}</div>
 
                                                 <div className="flex-1 min-w-0">
-                                                    <div className="flex items-center gap-2 mb-1">
-                            <span className="font-semibold text-gray-900">
+                                                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                            <span className="font-bold text-gray-900 text-lg">
                               {field.label || 'Unbenanntes Feld'}
                             </span>
-                                                        <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+                                                        <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
                               {field.type}
                             </span>
                                                         {field.required && (
-                                                            <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-medium">
+                                                            <span className="px-2 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded-full">
                                 Pflicht
                               </span>
                                                         )}
                                                     </div>
-                                                    <p className="text-sm text-gray-500">
-                                                        <code className="bg-gray-200 px-2 py-0.5 rounded text-xs">{field.key || 'kein-key'}</code>
+                                                    <p className="text-sm text-gray-600 mb-1">
+                                                        Key: <code className="bg-gray-200 px-2 py-0.5 rounded text-xs font-mono">{field.key || 'kein-key'}</code>
                                                     </p>
                                                     {field.description && (
                                                         <p className="text-sm text-gray-600 mt-2">{field.description}</p>
                                                     )}
                                                     {['SELECT', 'RADIO'].includes(field.type) && field.options.length > 0 && (
                                                         <p className="text-xs text-gray-500 mt-2">
-                                                            {field.options.length} {field.options.length === 1 ? 'Option' : 'Optionen'}
+                                                            {field.options.length} Option{field.options.length !== 1 && 'en'}
                                                         </p>
                                                     )}
                                                 </div>
 
-                                                <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+                                                <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                                     <button
                                                         type="button"
                                                         onClick={() => moveFieldUp(index)}
                                                         disabled={index === 0}
-                                                        className="w-8 h-8 flex items-center justify-center hover:bg-gray-200 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition text-gray-600"
+                                                        className="w-10 h-10 flex items-center justify-center hover:bg-gray-200 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition text-gray-700"
                                                         title="Nach oben"
                                                     >
                                                         ↑
@@ -283,7 +293,7 @@ export default function FormBuilderPage() {
                                                         type="button"
                                                         onClick={() => moveFieldDown(index)}
                                                         disabled={index === fields.length - 1}
-                                                        className="w-8 h-8 flex items-center justify-center hover:bg-gray-200 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition text-gray-600"
+                                                        className="w-10 h-10 flex items-center justify-center hover:bg-gray-200 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition text-gray-700"
                                                         title="Nach unten"
                                                     >
                                                         ↓
@@ -291,7 +301,7 @@ export default function FormBuilderPage() {
                                                     <button
                                                         type="button"
                                                         onClick={() => setEditingField(field)}
-                                                        className="w-8 h-8 flex items-center justify-center hover:bg-blue-100 text-blue-600 rounded-lg transition"
+                                                        className="w-10 h-10 flex items-center justify-center hover:bg-blue-100 text-blue-600 rounded-lg transition"
                                                         title="Bearbeiten"
                                                     >
                                                         ✏️
@@ -299,7 +309,7 @@ export default function FormBuilderPage() {
                                                     <button
                                                         type="button"
                                                         onClick={() => deleteField(field.tempId)}
-                                                        className="w-8 h-8 flex items-center justify-center hover:bg-red-100 text-red-600 rounded-lg transition"
+                                                        className="w-10 h-10 flex items-center justify-center hover:bg-red-100 text-red-600 rounded-lg transition"
                                                         title="Löschen"
                                                     >
                                                         🗑️
@@ -313,25 +323,25 @@ export default function FormBuilderPage() {
                         </div>
 
                         {error && (
-                            <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-start gap-3">
-                                <span className="text-xl flex-shrink-0">⚠️</span>
+                            <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 flex items-start gap-3 animate-slideDown">
+                                <span className="text-2xl flex-shrink-0">⚠️</span>
                                 <span className="text-red-700 font-medium">{error}</span>
                             </div>
                         )}
 
-                        {/* Actions */}
-                        <div className="flex gap-4">
+                        {/* Action Buttons */}
+                        <div className="flex flex-col sm:flex-row gap-4 animate-slideUp" style={{ animationDelay: '0.2s' }}>
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="flex-1 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold rounded-xl hover:shadow-xl hover:shadow-green-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:-translate-y-0.5 disabled:hover:translate-y-0"
+                                className="flex-1 py-4 bg-green-600 text-white text-lg font-bold rounded-xl hover:bg-green-700 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:-translate-y-0.5 disabled:hover:translate-y-0"
                             >
                                 {isSubmitting ? '⏳ Wird erstellt...' : '✓ Formular erstellen'}
                             </button>
                             <button
                                 type="button"
                                 onClick={() => router.push('/')}
-                                className="px-8 py-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 font-semibold transition-all"
+                                className="sm:w-auto px-8 py-4 bg-white border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all"
                             >
                                 Abbrechen
                             </button>

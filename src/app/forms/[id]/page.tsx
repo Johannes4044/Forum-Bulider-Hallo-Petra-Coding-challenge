@@ -23,31 +23,31 @@ export default async function PublicFormPage({
 
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* Header */}
+            {/* Navigation */}
             <nav className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-xl border-b border-gray-100">
-                <div className="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
+                <div className="max-w-4xl mx-auto px-6 h-20 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition">
-                        <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/30">
-                            <span className="text-white text-lg font-bold">F</span>
+                        <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
+                            <span className="text-white text-xl font-bold">F</span>
                         </div>
-                        <span className="font-bold text-lg">FormBuilder</span>
+                        <span className="text-xl font-bold text-gray-900">FormBuilder</span>
                     </Link>
                 </div>
             </nav>
 
-            <main className="pt-24 pb-12 px-6">
+            <main className="pt-28 pb-12 px-6">
                 <div className="max-w-3xl mx-auto">
-                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div className="bg-white rounded-2xl border border-gray-200 shadow-lg overflow-hidden animate-slideUp">
                         {/* Header */}
-                        <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-8 text-white">
+                        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-white">
                             <div className="flex items-start gap-4">
-                                <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center text-3xl flex-shrink-0">
+                                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center text-4xl flex-shrink-0">
                                     📝
                                 </div>
                                 <div>
                                     <h1 className="text-3xl font-bold mb-2">{form.title}</h1>
                                     {form.description && (
-                                        <p className="text-blue-100 text-lg leading-relaxed opacity-90">
+                                        <p className="text-blue-100 text-lg leading-relaxed">
                                             {form.description}
                                         </p>
                                     )}

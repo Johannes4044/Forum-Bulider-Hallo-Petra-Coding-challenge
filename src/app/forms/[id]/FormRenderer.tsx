@@ -62,19 +62,19 @@ export default function FormRenderer({ form }: { form: Form }) {
 
     if (submitted) {
         return (
-            <div className="text-center py-16">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl mb-6 shadow-lg shadow-green-500/30">
-                    <span className="text-4xl">✓</span>
+            <div className="text-center py-16 animate-scaleIn">
+                <div className="inline-flex items-center justify-center w-24 h-24 bg-green-100 rounded-full mb-6">
+                    <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center">
+                        <span className="text-white text-4xl">✓</span>
+                    </div>
                 </div>
-                <h2 className="text-3xl font-bold mb-3 text-gray-900">Vielen Dank!</h2>
+                <h2 className="text-3xl font-bold text-gray-900 mb-3">Vielen Dank!</h2>
                 <p className="text-gray-600 text-lg">
                     Ihre Angaben wurden erfolgreich übermittelt.
                 </p>
             </div>
         )
     }
-
-    const inputBaseClasses = "w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900 placeholder:text-gray-400"
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -98,7 +98,7 @@ export default function FormRenderer({ form }: { form: Form }) {
                             onChange={(e) => handleChange(field.key, e.target.value)}
                             required={field.required}
                             placeholder={field.placeholder || field.label}
-                            className={inputBaseClasses}
+                            className="input-base"
                         />
                     )}
 
@@ -109,7 +109,7 @@ export default function FormRenderer({ form }: { form: Form }) {
                             onChange={(e) => handleChange(field.key, e.target.value)}
                             required={field.required}
                             placeholder={field.placeholder || 'beispiel@email.de'}
-                            className={inputBaseClasses}
+                            className="input-base"
                         />
                     )}
 
@@ -122,7 +122,7 @@ export default function FormRenderer({ form }: { form: Form }) {
                             placeholder={field.placeholder || '0'}
                             min={field.min ?? undefined}
                             max={field.max ?? undefined}
-                            className={inputBaseClasses}
+                            className="input-base"
                         />
                     )}
 
@@ -132,7 +132,7 @@ export default function FormRenderer({ form }: { form: Form }) {
                             value={(formData[field.key] as string) || ''}
                             onChange={(e) => handleChange(field.key, e.target.value)}
                             required={field.required}
-                            className={inputBaseClasses}
+                            className="input-base"
                         />
                     )}
 
@@ -143,7 +143,7 @@ export default function FormRenderer({ form }: { form: Form }) {
                             required={field.required}
                             placeholder={field.placeholder || field.label}
                             rows={4}
-                            className={inputBaseClasses}
+                            className="input-base"
                         />
                     )}
 
@@ -152,7 +152,7 @@ export default function FormRenderer({ form }: { form: Form }) {
                             value={(formData[field.key] as string) || ''}
                             onChange={(e) => handleChange(field.key, e.target.value)}
                             required={field.required}
-                            className={inputBaseClasses}
+                            className="input-base"
                         >
                             <option value="">Bitte wählen...</option>
                             {(Array.isArray(field.options) ? field.options : []).map((option) => (
@@ -168,7 +168,7 @@ export default function FormRenderer({ form }: { form: Form }) {
                             {(Array.isArray(field.options) ? field.options : []).map((option) => (
                                 <label
                                     key={option}
-                                    className="flex items-center gap-3 p-3 bg-gray-50 hover:bg-white border border-gray-200 hover:border-blue-300 rounded-xl cursor-pointer transition-all group"
+                                    className="flex items-center gap-3 p-4 bg-white border-2 border-gray-200 hover:border-blue-400 hover:bg-blue-50 rounded-xl cursor-pointer transition-all group"
                                 >
                                     <input
                                         type="radio"
@@ -179,14 +179,14 @@ export default function FormRenderer({ form }: { form: Form }) {
                                         required={field.required}
                                         className="w-5 h-5 text-blue-600"
                                     />
-                                    <span className="text-gray-700 group-hover:text-gray-900 font-medium">{option}</span>
+                                    <span className="text-gray-700 font-medium group-hover:text-gray-900">{option}</span>
                                 </label>
                             ))}
                         </div>
                     )}
 
                     {field.type === 'CHECKBOX' && (
-                        <label className="flex items-start gap-3 p-4 bg-gray-50 border border-gray-200 rounded-xl hover:border-blue-300 hover:bg-white cursor-pointer transition-all">
+                        <label className="flex items-start gap-3 p-4 bg-blue-50 border-2 border-blue-200 rounded-xl hover:bg-blue-100 cursor-pointer transition-all">
                             <input
                                 type="checkbox"
                                 checked={(formData[field.key] as boolean) || false}
@@ -194,14 +194,14 @@ export default function FormRenderer({ form }: { form: Form }) {
                                 required={field.required}
                                 className="w-5 h-5 mt-0.5 rounded border-gray-300 text-blue-600"
                             />
-                            <span className="text-gray-700 leading-relaxed">{field.description || field.label}</span>
+                            <span className="text-gray-700 font-medium leading-relaxed">{field.description || field.label}</span>
                         </label>
                     )}
                 </div>
             ))}
 
             {error && (
-                <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
+                <div className="p-4 bg-red-50 border-2 border-red-200 rounded-xl flex items-start gap-3 animate-slideDown">
                     <span className="text-xl flex-shrink-0">⚠️</span>
                     <span className="text-red-700 font-medium">{error}</span>
                 </div>
@@ -210,7 +210,7 @@ export default function FormRenderer({ form }: { form: Form }) {
             <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-lg rounded-xl hover:shadow-xl hover:shadow-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:-translate-y-0.5 disabled:hover:translate-y-0"
+                className="w-full py-4 bg-blue-600 text-white text-lg font-bold rounded-xl hover:bg-blue-700 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:-translate-y-0.5 disabled:hover:translate-y-0"
             >
                 {isSubmitting ? (
                     <span className="flex items-center justify-center gap-2">
