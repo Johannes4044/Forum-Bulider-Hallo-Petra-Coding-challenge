@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "./providers";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -9,8 +10,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-    title: "FormBuilder - Formulare für Handwerksbetriebe",
-    description: "Erstelle professionelle Formulare einfach & schnell - speziell für Handwerksbetriebe",
+    title: "FormBuilder - Interne Formular-Verwaltung",
+    description: "Interne Anwendung für Formular-Verwaltung und -Erstellung",
 };
 
 export default function RootLayout({
@@ -20,7 +21,9 @@ export default function RootLayout({
 }) {
     return (
         <html lang="de" className={inter.variable}>
-        <body className="antialiased font-sans bg-gray-50">{children}</body>
+        <body className="antialiased font-sans bg-gray-50">
+            <AuthProvider>{children}</AuthProvider>
+        </body>
         </html>
     );
 }

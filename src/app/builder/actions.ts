@@ -1,6 +1,7 @@
 'use server'
 
 import { prisma } from '@/lib/prisma'
+import { requireAuth } from '@/lib/server-auth'
 
 type FieldType = 'TEXT' | 'EMAIL' | 'NUMBER' | 'DATE' | 'TEXTAREA' | 'SELECT' | 'RADIO' | 'CHECKBOX'
 
@@ -25,6 +26,9 @@ type FormInput = {
 
 export async function createForm(data: FormInput) {
     try {
+        // Authentifizierung prüfen
+        await requireAuth()
+
         // Validierung
         if (!data.title.trim()) {
             return { success: false, error: 'Titel ist erforderlich' }

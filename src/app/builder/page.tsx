@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createForm } from './actions'
 import FieldEditor from './FieldEditor'
 import Link from 'next/link'
+import { LogoutButton } from '@/components/LogoutButton'
 
 type FieldType = 'TEXT' | 'EMAIL' | 'NUMBER' | 'DATE' | 'TEXTAREA' | 'SELECT' | 'RADIO' | 'CHECKBOX'
 
@@ -149,13 +150,22 @@ export default function FormBuilderPage() {
             {/* Navigation */}
             <nav className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-xl border-b border-gray-100">
                 <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-                    <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition">
+                    <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
                             <span className="text-white text-xl font-bold">F</span>
                         </div>
                         <span className="text-xl font-bold text-gray-900">FormBuilder</span>
-                    </Link>
-                    <span className="text-sm text-gray-500 hidden sm:block">Formular erstellen</span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <span className="text-sm text-gray-500 hidden sm:block">Formular erstellen</span>
+                        <Link
+                            href="/admin"
+                            className="px-3 py-1 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-all"
+                        >
+                            📊 Admin
+                        </Link>
+                        <LogoutButton className="px-3 py-1 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-all" />
+                    </div>
                 </div>
             </nav>
 
@@ -340,7 +350,7 @@ export default function FormBuilderPage() {
                             </button>
                             <button
                                 type="button"
-                                onClick={() => router.push('/')}
+                                onClick={() => router.push('/admin')}
                                 className="sm:w-auto px-8 py-4 bg-white border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all"
                             >
                                 Abbrechen
