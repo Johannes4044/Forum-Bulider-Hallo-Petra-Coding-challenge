@@ -40,14 +40,12 @@ export default function FormRenderer({ form }: { form: Form }) {
         setIsSubmitting(true)
 
         try {
-            // Validierung: Pflichtfelder prüfen
             for (const field of form.fields) {
                 if (field.required && !formData[field.key]) {
                     throw new Error(`${field.label} ist ein Pflichtfeld`)
                 }
             }
 
-            // Server Action aufrufen
             const result = await submitForm(form.id, formData)
 
             if (result.success) {
@@ -62,35 +60,37 @@ export default function FormRenderer({ form }: { form: Form }) {
         }
     }
 
-    // Erfolgsmeldung nach dem Absenden
     if (submitted) {
         return (
-            <div className="text-center py-8">
-                <div className="text-green-600 text-5xl mb-4">✓</div>
-                <h2 className="text-2xl font-bold mb-2">Vielen Dank!</h2>
-                <p className="text-gray-600">
+            <div className="text-center py-16">
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl mb-6 shadow-lg shadow-green-500/30">
+                    <span className="text-4xl">✓</span>
+                </div>
+                <h2 className="text-3xl font-bold mb-3 text-gray-900">Vielen Dank!</h2>
+                <p className="text-gray-600 text-lg">
                     Ihre Angaben wurden erfolgreich übermittelt.
                 </p>
             </div>
         )
     }
 
+    const inputBaseClasses = "w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900 placeholder:text-gray-400"
+
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
             {form.fields.map((field) => (
                 <div key={field.id}>
                     <label className="block mb-2">
-            <span className="font-medium">
+            <span className="text-base font-semibold text-gray-900">
               {field.label}
                 {field.required && <span className="text-red-500 ml-1">*</span>}
             </span>
                     </label>
 
                     {field.description && (
-                        <p className="text-sm text-gray-500 mb-2">{field.description}</p>
+                        <p className="text-sm text-gray-600 mb-3">{field.description}</p>
                     )}
 
-                    {/* TEXT */}
                     {field.type === 'TEXT' && (
                         <input
                             type="text"
@@ -98,11 +98,10 @@ export default function FormRenderer({ form }: { form: Form }) {
                             onChange={(e) => handleChange(field.key, e.target.value)}
                             required={field.required}
                             placeholder={field.placeholder || field.label}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className={inputBaseClasses}
                         />
                     )}
 
-                    {/* EMAIL */}
                     {field.type === 'EMAIL' && (
                         <input
                             type="email"
@@ -110,11 +109,10 @@ export default function FormRenderer({ form }: { form: Form }) {
                             onChange={(e) => handleChange(field.key, e.target.value)}
                             required={field.required}
                             placeholder={field.placeholder || 'beispiel@email.de'}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className={inputBaseClasses}
                         />
                     )}
 
-                    {/* NUMBER */}
                     {field.type === 'NUMBER' && (
                         <input
                             type="number"
@@ -124,22 +122,20 @@ export default function FormRenderer({ form }: { form: Form }) {
                             placeholder={field.placeholder || '0'}
                             min={field.min ?? undefined}
                             max={field.max ?? undefined}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className={inputBaseClasses}
                         />
                     )}
 
-                    {/* DATE */}
                     {field.type === 'DATE' && (
                         <input
                             type="date"
                             value={(formData[field.key] as string) || ''}
                             onChange={(e) => handleChange(field.key, e.target.value)}
                             required={field.required}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className={inputBaseClasses}
                         />
                     )}
 
-                    {/* TEXTAREA */}
                     {field.type === 'TEXTAREA' && (
                         <textarea
                             value={(formData[field.key] as string) || ''}
@@ -147,17 +143,16 @@ export default function FormRenderer({ form }: { form: Form }) {
                             required={field.required}
                             placeholder={field.placeholder || field.label}
                             rows={4}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className={inputBaseClasses}
                         />
                     )}
 
-                    {/* SELECT */}
                     {field.type === 'SELECT' && field.options && (
                         <select
                             value={(formData[field.key] as string) || ''}
                             onChange={(e) => handleChange(field.key, e.target.value)}
                             required={field.required}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className={inputBaseClasses}
                         >
                             <option value="">Bitte wählen...</option>
                             {(Array.isArray(field.options) ? field.options : []).map((option) => (
@@ -168,11 +163,13 @@ export default function FormRenderer({ form }: { form: Form }) {
                         </select>
                     )}
 
-                    {/* RADIO */}
                     {field.type === 'RADIO' && field.options && (
                         <div className="space-y-2">
                             {(Array.isArray(field.options) ? field.options : []).map((option) => (
-                                <label key={option} className="flex items-center gap-2 cursor-pointer">
+                                <label
+                                    key={option}
+                                    className="flex items-center gap-3 p-3 bg-gray-50 hover:bg-white border border-gray-200 hover:border-blue-300 rounded-xl cursor-pointer transition-all group"
+                                >
                                     <input
                                         type="radio"
                                         name={field.key}
@@ -180,42 +177,49 @@ export default function FormRenderer({ form }: { form: Form }) {
                                         checked={(formData[field.key] as string) === option}
                                         onChange={(e) => handleChange(field.key, e.target.value)}
                                         required={field.required}
-                                        className="w-4 h-4"
+                                        className="w-5 h-5 text-blue-600"
                                     />
-                                    <span>{option}</span>
+                                    <span className="text-gray-700 group-hover:text-gray-900 font-medium">{option}</span>
                                 </label>
                             ))}
                         </div>
                     )}
 
-                    {/* CHECKBOX */}
                     {field.type === 'CHECKBOX' && (
-                        <label className="flex items-center gap-2 cursor-pointer">
+                        <label className="flex items-start gap-3 p-4 bg-gray-50 border border-gray-200 rounded-xl hover:border-blue-300 hover:bg-white cursor-pointer transition-all">
                             <input
                                 type="checkbox"
                                 checked={(formData[field.key] as boolean) || false}
                                 onChange={(e) => handleChange(field.key, e.target.checked)}
                                 required={field.required}
-                                className="w-5 h-5"
+                                className="w-5 h-5 mt-0.5 rounded border-gray-300 text-blue-600"
                             />
-                            <span>{field.description || 'Zustimmen'}</span>
+                            <span className="text-gray-700 leading-relaxed">{field.description || field.label}</span>
                         </label>
                     )}
                 </div>
             ))}
 
             {error && (
-                <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
-                    {error}
+                <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
+                    <span className="text-xl flex-shrink-0">⚠️</span>
+                    <span className="text-red-700 font-medium">{error}</span>
                 </div>
             )}
 
             <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition"
+                className="w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-lg rounded-xl hover:shadow-xl hover:shadow-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:-translate-y-0.5 disabled:hover:translate-y-0"
             >
-                {isSubmitting ? 'Wird gesendet...' : 'Absenden'}
+                {isSubmitting ? (
+                    <span className="flex items-center justify-center gap-2">
+            <span className="animate-spin">⏳</span>
+            <span>Wird gesendet...</span>
+          </span>
+                ) : (
+                    '✓ Absenden'
+                )}
             </button>
         </form>
     )

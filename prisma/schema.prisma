@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Form {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  fields      FormField[]
+  submissions FormSubmission[]
+
+  @@map("forms")
+}
+
+model FormField {
+  id          String   @id @default(cuid())
+  formId      String
+  key         String
+  label       String
+  description String?
+  type        FieldType
+  order       Int      @default(0)
+  required    Boolean  @default(false)
+  options     Json?    // Für Select/Radio: ["Option 1", "Option 2"]
+  placeholder String?  // Für Text/Email/Number/Textarea
+  min         Int?     // Für Number/Date
+  max         Int?     // Für Number/Date
+
+  form        Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+  @@index([formId])
+  @@unique([formId, key])
+  @@map("form_fields")
+}
+
+enum FieldType {
+  TEXT
+  EMAIL
+  NUMBER
+  DATE
+  TEXTAREA
+  SELECT
+  RADIO
+  CHECKBOX
+}
+
+model FormSubmission {
+  id          String   @id @default(cuid())
+  formId      String
+  data        Json
+  submittedAt DateTime @default(now())
+
+  form        Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+  @@index([formId])
+  @@map("form_submissions")
+}

@@ -39,7 +39,6 @@ export default function FieldEditor({ field, onSave, onCancel }: Props) {
     const [optionsText, setOptionsText] = useState(field.options.join('\n'))
     const [error, setError] = useState<string | null>(null)
 
-    // Key automatisch aus Label generieren (nur bei neuen Feldern)
     useEffect(() => {
         if (!editedField.key && editedField.label) {
             const autoKey = editedField.label
@@ -54,7 +53,6 @@ export default function FieldEditor({ field, onSave, onCancel }: Props) {
     const handleSave = () => {
         setError(null)
 
-        // Validierung
         if (!editedField.key.trim()) {
             setError('Key ist erforderlich')
             return
@@ -65,13 +63,11 @@ export default function FieldEditor({ field, onSave, onCancel }: Props) {
             return
         }
 
-        // Key-Format prüfen
         if (!/^[a-z0-9_]+$/.test(editedField.key)) {
             setError('Key darf nur Kleinbuchstaben, Zahlen und Unterstriche enthalten')
             return
         }
 
-        // Options für SELECT/RADIO-Felder
         let options: string[] = []
         if (FIELD_TYPE_INFO[editedField.type].needsOptions) {
             options = optionsText
@@ -92,16 +88,28 @@ export default function FieldEditor({ field, onSave, onCancel }: Props) {
     }
 
     const needsOptions = FIELD_TYPE_INFO[editedField.type].needsOptions
+    const inputClasses = "w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
-                <h2 className="text-2xl font-bold mb-6">Feld bearbeiten</h2>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+                {/* Header */}
+                <div className="sticky top-0 bg-gradient-to-r from-blue-500 to-purple-500 p-6 text-white">
+                    <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center text-2xl">
+                            {FIELD_TYPE_INFO[editedField.type].emoji}
+                        </div>
+                        <div>
+                            <h2 className="text-2xl font-bold">Feld bearbeiten</h2>
+                            <p className="text-blue-100 text-sm mt-0.5">Konfiguriere dein Formular-Feld</p>
+                        </div>
+                    </div>
+                </div>
 
-                <div className="space-y-4">
+                <div className="p-6 space-y-5">
                     {/* Feldtyp */}
                     <div>
-                        <label className="block font-medium mb-2">
+                        <label className="block text-sm font-semibold text-gray-900 mb-2">
                             Feldtyp <span className="text-red-500">*</span>
                         </label>
                         <select
@@ -109,12 +117,11 @@ export default function FieldEditor({ field, onSave, onCancel }: Props) {
                             onChange={(e) => {
                                 const newType = e.target.value as FieldType
                                 setEditedField({ ...editedField, type: newType })
-                                // Optionen zurücksetzen wenn neuer Typ keine braucht
                                 if (!FIELD_TYPE_INFO[newType].needsOptions) {
                                     setOptionsText('')
                                 }
                             }}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className={inputClasses}
                         >
                             {(Object.entries(FIELD_TYPE_INFO) as [FieldType, typeof FIELD_TYPE_INFO[FieldType]][]).map(
                                 ([type, info]) => (
@@ -128,75 +135,71 @@ export default function FieldEditor({ field, onSave, onCancel }: Props) {
 
                     {/* Label */}
                     <div>
-                        <label className="block font-medium mb-2">
+                        <label className="block text-sm font-semibold text-gray-900 mb-2">
                             Label <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="text"
                             value={editedField.label}
                             onChange={(e) => setEditedField({ ...editedField, label: e.target.value })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className={inputClasses}
                             placeholder="z.B. Telefonnummer"
                         />
-                        <p className="text-sm text-gray-500 mt-1">
-                            Der Text, der dem Nutzer angezeigt wird
-                        </p>
+                        <p className="text-xs text-gray-500 mt-1.5">Der Text, der dem Nutzer angezeigt wird</p>
                     </div>
 
                     {/* Key */}
                     <div>
-                        <label className="block font-medium mb-2">
+                        <label className="block text-sm font-semibold text-gray-900 mb-2">
                             Key <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="text"
                             value={editedField.key}
                             onChange={(e) => setEditedField({ ...editedField, key: e.target.value })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className={`${inputClasses} font-mono text-sm`}
                             placeholder="z.B. contact_phone"
                         />
-                        <p className="text-sm text-gray-500 mt-1">
-                            Eindeutiger Identifier (nur Kleinbuchstaben, Zahlen, Unterstriche)
-                        </p>
+                        <p className="text-xs text-gray-500 mt-1.5">Eindeutiger Identifier (nur Kleinbuchstaben, Zahlen, Unterstriche)</p>
                     </div>
 
                     {/* Beschreibung */}
                     <div>
-                        <label className="block font-medium mb-2">
+                        <label className="block text-sm font-semibold text-gray-900 mb-2">
                             Beschreibung (optional)
                         </label>
                         <textarea
                             value={editedField.description}
-                            onChange={(e) =>
-                                setEditedField({ ...editedField, description: e.target.value })
-                            }
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                            onChange={(e) => setEditedField({ ...editedField, description: e.target.value })}
+                            className={inputClasses}
                             placeholder="Zusätzliche Hinweise für den Nutzer"
                             rows={2}
                         />
                     </div>
 
-                    {/* Placeholder (für Text-Felder) */}
+                    {/* Placeholder */}
                     {['TEXT', 'EMAIL', 'NUMBER', 'TEXTAREA'].includes(editedField.type) && (
                         <div>
-                            <label className="block font-medium mb-2">Platzhalter (optional)</label>
+                            <label className="block text-sm font-semibold text-gray-900 mb-2">
+                                Platzhalter (optional)
+                            </label>
                             <input
                                 type="text"
                                 value={editedField.placeholder}
-                                onChange={(e) =>
-                                    setEditedField({ ...editedField, placeholder: e.target.value })
-                                }
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                onChange={(e) => setEditedField({ ...editedField, placeholder: e.target.value })}
+                                className={inputClasses}
                                 placeholder="z.B. Hier eingeben..."
                             />
                         </div>
                     )}
 
-                    {/* Min/Max (für Number) */}
+                    {/* Min/Max */}
                     {editedField.type === 'NUMBER' && (
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="block font-medium mb-2">Minimum (optional)</label>
+                                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                                    Minimum (optional)
+                                </label>
                                 <input
                                     type="number"
                                     value={editedField.min ?? ''}
@@ -206,12 +209,14 @@ export default function FieldEditor({ field, onSave, onCancel }: Props) {
                                             min: e.target.value ? parseInt(e.target.value) : null,
                                         })
                                     }
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    className={inputClasses}
                                     placeholder="0"
                                 />
                             </div>
                             <div>
-                                <label className="block font-medium mb-2">Maximum (optional)</label>
+                                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                                    Maximum (optional)
+                                </label>
                                 <input
                                     type="number"
                                     value={editedField.max ?? ''}
@@ -221,82 +226,78 @@ export default function FieldEditor({ field, onSave, onCancel }: Props) {
                                             max: e.target.value ? parseInt(e.target.value) : null,
                                         })
                                     }
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    className={inputClasses}
                                     placeholder="100"
                                 />
                             </div>
                         </div>
                     )}
 
-                    {/* Pflichtfeld (nicht für Checkbox) */}
+                    {/* Pflichtfeld */}
                     {editedField.type !== 'CHECKBOX' && (
-                        <div className="flex items-center gap-2">
+                        <label className="flex items-center gap-3 p-4 bg-gray-50 border border-gray-200 rounded-xl hover:bg-white hover:border-blue-300 cursor-pointer transition-all">
                             <input
                                 type="checkbox"
-                                id="required"
                                 checked={editedField.required}
-                                onChange={(e) =>
-                                    setEditedField({ ...editedField, required: e.target.checked })
-                                }
-                                className="w-4 h-4"
+                                onChange={(e) => setEditedField({ ...editedField, required: e.target.checked })}
+                                className="w-5 h-5 rounded border-gray-300 text-blue-600"
                             />
-                            <label htmlFor="required" className="font-medium cursor-pointer">
-                                Pflichtfeld
-                            </label>
-                        </div>
+                            <span className="font-semibold text-gray-900">Pflichtfeld (muss ausgefüllt werden)</span>
+                        </label>
                     )}
 
-                    {/* Optionen (für SELECT/RADIO) */}
+                    {/* Optionen */}
                     {needsOptions && (
                         <div>
-                            <label className="block font-medium mb-2">
+                            <label className="block text-sm font-semibold text-gray-900 mb-2">
                                 Auswahloptionen <span className="text-red-500">*</span>
                             </label>
                             <textarea
                                 value={optionsText}
                                 onChange={(e) => setOptionsText(e.target.value)}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 font-mono text-sm"
-                                placeholder="Eine Option pro Zeile"
+                                className={`${inputClasses} font-mono text-sm`}
+                                placeholder="Eine Option pro Zeile&#10;Option 1&#10;Option 2&#10;Option 3"
                                 rows={6}
                             />
-                            <p className="text-sm text-gray-500 mt-1">
-                                Jede Zeile wird zu einer Auswahloption
-                            </p>
+                            <p className="text-xs text-gray-500 mt-1.5">Jede Zeile wird zu einer Auswahloption</p>
                             {optionsText && (
-                                <div className="mt-2 p-3 bg-gray-50 rounded border border-gray-200">
-                                    <p className="text-sm font-medium mb-1">Vorschau:</p>
-                                    <ul className="text-sm space-y-1">
+                                <div className="mt-3 p-4 bg-blue-50 border border-blue-100 rounded-xl">
+                                    <p className="text-sm font-semibold text-blue-900 mb-2">Vorschau:</p>
+                                    <div className="space-y-2">
                                         {optionsText
                                             .split('\n')
                                             .filter((opt) => opt.trim())
                                             .map((opt, i) => (
-                                                <li key={i} className="text-gray-700">
-                                                    {editedField.type === 'RADIO' ? '🔘' : '•'} {opt.trim()}
-                                                </li>
+                                                <div key={i} className="flex items-center gap-2 text-sm text-blue-800">
+                                                    <span>{editedField.type === 'RADIO' ? '🔘' : '📋'}</span>
+                                                    <span>{opt.trim()}</span>
+                                                </div>
                                             ))}
-                                    </ul>
+                                    </div>
                                 </div>
                             )}
                         </div>
                     )}
 
                     {error && (
-                        <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-                            {error}
+                        <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
+                            <span className="text-xl flex-shrink-0">⚠️</span>
+                            <span className="text-red-700 font-medium">{error}</span>
                         </div>
                     )}
                 </div>
 
-                <div className="flex gap-3 mt-6">
+                {/* Footer */}
+                <div className="sticky bottom-0 flex gap-3 p-6 bg-gray-50 border-t border-gray-100">
                     <button
                         onClick={handleSave}
-                        className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 font-medium"
+                        className="flex-1 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-xl hover:shadow-lg hover:shadow-blue-500/50 transition-all hover:-translate-y-0.5"
                     >
-                        Speichern
+                        ✓ Speichern
                     </button>
                     <button
                         onClick={onCancel}
-                        className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                        className="px-8 py-3 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 font-semibold transition-all"
                     >
                         Abbrechen
                     </button>

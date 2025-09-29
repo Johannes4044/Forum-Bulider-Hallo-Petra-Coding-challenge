@@ -1,9 +1,15 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
+const inter = Inter({
+    subsets: ["latin"],
+    display: "swap",
+});
+
 export const metadata: Metadata = {
-    title: "Form Builder - HalloPetra",
-    description: "Erstelle und verwalte Formulare",
+    title: "FormBuilder - Erstelle Formulare einfach & schnell",
+    description: "Erstelle professionelle Formulare mit verschiedenen Feldtypen, Validierung und öffentlichen Links.",
 };
 
 export default function RootLayout({
@@ -12,8 +18,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="de">
-        <body>{children}</body>
+        <html lang="de" className={inter.className}>
+        <body className="antialiased">{children}</body>
         </html>
     );
 }
