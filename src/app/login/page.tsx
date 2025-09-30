@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { signIn, getSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { Logo } from '@/components/Logo'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -86,10 +87,8 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-3">
-            <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/30">
-              <span className="text-white text-2xl font-bold">F</span>
-            </div>
-            <span className="text-2xl font-bold text-gray-900">FormBuilder</span>
+            <Logo size="lg" className="rounded-2xl" />
+            <span className="text-2xl font-bold text-gray-900">HalloPetra FormBuilder</span>
           </div>
         </div>
 

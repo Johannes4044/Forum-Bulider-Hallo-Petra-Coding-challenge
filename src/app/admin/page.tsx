@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { getAllForms, deleteForm, duplicateForm } from './actions'
 import { LogoutButton } from '@/components/LogoutButton'
+import { Logo } from '@/components/Logo'
 
 type FormWithStats = {
   id: string
@@ -89,10 +90,8 @@ export default function AdminPage() {
       <nav className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-xl border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
-              <span className="text-white text-xl font-bold">F</span>
-            </div>
-            <span className="text-xl font-bold text-gray-900">FormBuilder</span>
+            <Logo size="md" />
+            <span className="text-xl font-bold text-gray-900">HalloPetra FormBuilder</span>
           </div>
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-500 hidden sm:block">Admin-Bereich</span>

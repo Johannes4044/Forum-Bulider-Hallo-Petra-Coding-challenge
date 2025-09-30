@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import FormRenderer from './FormRenderer'
 import Link from 'next/link'
+import { Logo } from '@/components/Logo'
 
 export default async function PublicFormPage({
                                                  params,
@@ -27,10 +28,8 @@ export default async function PublicFormPage({
             <nav className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-xl border-b border-gray-100">
                 <div className="max-w-4xl mx-auto px-6 h-20 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition">
-                        <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
-                            <span className="text-white text-xl font-bold">F</span>
-                        </div>
-                        <span className="text-xl font-bold text-gray-900">FormBuilder</span>
+                        <Logo size="md" />
+                        <span className="text-xl font-bold text-gray-900">HalloPetra FormBuilder</span>
                     </Link>
                 </div>
             </nav>
