@@ -118,7 +118,7 @@ export async function updateForm(formId: string, data: FormInput) {
           type: field.type,
           required: field.required,
           order: field.order,
-          options: field.options,
+          options: field.options as any,
           placeholder: field.placeholder,
           min: field.min,
           max: field.max

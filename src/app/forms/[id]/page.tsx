@@ -2,7 +2,8 @@ import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import FormRenderer from './FormRenderer'
 import Link from 'next/link'
-import { Logo } from '@/components/Logo'
+import { SimpleLogo } from '@/components/SimpleLogo'
+
 
 export default async function PublicFormPage({
                                                  params,
@@ -23,52 +24,40 @@ export default async function PublicFormPage({
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div style={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
             {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-xl border-b border-gray-100">
-                <div className="max-w-4xl mx-auto px-6 h-20 flex items-center justify-between">
-                    <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition">
-                        <Logo size="md" />
-                        <span className="text-xl font-bold text-gray-900">HalloPetra FormBuilder</span>
-                    </Link>
+            <nav style={{ backgroundColor: 'white', borderBottom: '1px solid #ddd', padding: '10px 20px' }}>
+                <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <SimpleLogo size={32} />
+                        <span style={{ fontSize: '20px', fontWeight: 'bold' }}>HalloPetra FormBuilder</span>
+                    </div>
                 </div>
             </nav>
 
-            <main className="pt-28 pb-12 px-6">
-                <div className="max-w-3xl mx-auto">
-                    <div className="bg-white rounded-2xl border border-gray-200 shadow-lg overflow-hidden animate-slideUp">
-                        {/* Header */}
-                        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-white">
-                            <div className="flex items-start gap-4">
-                                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center text-4xl flex-shrink-0">
-                                    📝
-                                </div>
-                                <div>
-                                    <h1 className="text-3xl font-bold mb-2">{form.title}</h1>
-                                    {form.description && (
-                                        <p className="text-blue-100 text-lg leading-relaxed">
-                                            {form.description}
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Form */}
-                        <div className="p-8">
-                            <FormRenderer form={form} />
-                        </div>
+            <main style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
+                <div style={{ backgroundColor: 'white', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden' }}>
+                    {/* Header */}
+                    <div style={{ backgroundColor: '#1976d2', padding: '30px', color: 'white' }}>
+                        <h1 style={{ margin: 0, marginBottom: '10px', fontSize: '28px' }}>{form.title}</h1>
+                        {form.description && (
+                            <p style={{ margin: 0, fontSize: '16px', opacity: 0.9 }}>
+                                {form.description}
+                            </p>
+                        )}
                     </div>
 
-                    {/* Footer */}
-                    <div className="mt-8 text-center">
-                        <p className="text-sm text-gray-500">
-                            Powered by{' '}
-                            <Link href="/" className="text-blue-600 hover:text-blue-700 font-medium transition">
-                                FormBuilder
-                            </Link>
-                        </p>
+                    {/* Form */}
+                    <div style={{ padding: '30px' }}>
+                        <FormRenderer form={form} />
                     </div>
+                </div>
+
+                {/* Footer */}
+                <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                    <p style={{ fontSize: '14px', color: '#666' }}>
+                        Powered by HalloPetra FormBuilder
+                    </p>
                 </div>
             </main>
         </div>

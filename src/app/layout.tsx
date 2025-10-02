@@ -10,8 +10,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-    title: "HalloPetra FormBuilder - Interne Formular-Verwaltung",
-    description: "HalloPetra interne Anwendung für Formular-Verwaltung und -Erstellung",
+    title: "FormBuilder - Simple Form Management",
+    description: "Simple form builder and management application",
 };
 
 export default function RootLayout({

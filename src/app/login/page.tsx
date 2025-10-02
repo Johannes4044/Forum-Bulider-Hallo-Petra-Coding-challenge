@@ -1,12 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { signIn, getSession } from 'next-auth/react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { Logo } from '@/components/Logo'
+import { useState } from 'react'
+import { signIn } from 'next-auth/react'
+import { useSearchParams } from 'next/navigation'
+import { SimpleLogo } from '@/components/SimpleLogo'
 
 export default function LoginPage() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const [formData, setFormData] = useState({
     email: '',
@@ -14,32 +13,19 @@ export default function LoginPage() {
   })
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
 
-  // Fix callbackUrl - if it's root "/", redirect to admin instead
-  const rawCallbackUrl = searchParams.get('callbackUrl') || '/admin'
-  const callbackUrl = rawCallbackUrl === '/' ? '/admin' : rawCallbackUrl
-
-  // Clear error when user starts typing
-  useEffect(() => {
-    if (error && (formData.email || formData.password)) {
-      setError(null)
-    }
-  }, [formData.email, formData.password, error])
+  const callbackUrl = searchParams.get('callbackUrl') || '/admin'
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
+    setFormData(prev => ({ ...prev, [name]: value }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!formData.email.trim() || !formData.password.trim()) {
-      setError('Bitte fülle alle Felder aus')
+      setError('Please fill all fields')
       return
     }
 
@@ -47,9 +33,6 @@ export default function LoginPage() {
     setLoading(true)
 
     try {
-      console.log('Attempting login with:', formData.email)
-      console.log('CallbackUrl:', callbackUrl)
-
       const result = await signIn('credentials', {
         email: formData.email.trim(),
         password: formData.password,
@@ -57,135 +40,129 @@ export default function LoginPage() {
         callbackUrl: callbackUrl
       })
 
-      console.log('SignIn result:', result)
-
       if (result?.error) {
-        console.log('Login error:', result.error)
-        setError('Ungültige Anmeldedaten')
+        setError('Invalid credentials')
         setFormData(prev => ({ ...prev, password: '' }))
       } else if (result?.ok) {
-        console.log('Login successful, redirecting to:', callbackUrl)
-        // Small delay to ensure session is set
-        setTimeout(() => {
-          window.location.href = callbackUrl
-        }, 100)
+        window.location.href = callbackUrl
       } else {
-        console.log('Unknown login state:', result)
-        setError('Anmeldung fehlgeschlagen - bitte versuche es erneut')
+        setError('Login failed')
       }
     } catch (err) {
-      console.error('Login exception:', err)
-      setError('Verbindungsfehler. Bitte versuche es erneut.')
+      setError('Connection error')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-3">
-            <Logo size="lg" className="rounded-2xl" />
-            <span className="text-2xl font-bold text-gray-900">HalloPetra FormBuilder</span>
+    <div style={{ minHeight: '100vh', backgroundColor: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+      <div style={{ maxWidth: '400px', width: '100%', backgroundColor: 'white', padding: '40px', borderRadius: '8px', border: '1px solid #ddd', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
+
+        {/* Header mit Logo */}
+        <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '10px' }}>
+            <SimpleLogo size={48} />
+            <h1 style={{ margin: 0, color: '#333', fontSize: '28px' }}>HalloPetra</h1>
           </div>
+          <p style={{ margin: 0, color: '#666', fontSize: '16px' }}>FormBuilder Admin Login</p>
         </div>
 
         {/* Login Form */}
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-xl p-8">
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin-Login</h1>
-            <p className="text-gray-600">
-              Melde dich an, um auf den Admin-Bereich zuzugreifen
-            </p>
+        <form onSubmit={handleSubmit}>
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#333' }}>
+              Email:
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              style={{
+                width: '100%',
+                padding: '12px',
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+                fontSize: '16px',
+                boxSizing: 'border-box'
+              }}
+              placeholder="admin@formbuilder.local"
+              disabled={loading}
+              required
+            />
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">
-                E-Mail
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all ${
-                  error ? 'border-red-300 bg-red-50' : 'border-gray-300'
-                }`}
-                placeholder="admin@formbuilder.local"
-                disabled={loading}
-                autoComplete="email"
-                autoFocus
-                required
-              />
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#333' }}>
+              Password:
+            </label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              style={{
+                width: '100%',
+                padding: '12px',
+                border: '1px solid #ddd',
+                borderRadius: '4px',
+                fontSize: '16px',
+                boxSizing: 'border-box'
+              }}
+              placeholder="Password"
+              disabled={loading}
+              required
+            />
+          </div>
+
+          {error && (
+            <div style={{
+              marginBottom: '20px',
+              padding: '12px',
+              backgroundColor: '#ffebee',
+              border: '1px solid #f44336',
+              borderRadius: '4px',
+              color: '#d32f2f',
+              fontSize: '14px'
+            }}>
+              {error}
             </div>
+          )}
 
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">
-                Passwort
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className={`w-full px-4 py-3 pr-12 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all ${
-                    error ? 'border-red-300 bg-red-50' : 'border-gray-300'
-                  }`}
-                  placeholder="Passwort eingeben"
-                  disabled={loading}
-                  autoComplete="current-password"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
-                  disabled={loading}
-                >
-                  {showPassword ? '🙈' : '👁️'}
-                </button>
-              </div>
-            </div>
+          <button
+            type="submit"
+            disabled={loading || !formData.email.trim() || !formData.password.trim()}
+            style={{
+              width: '100%',
+              padding: '12px',
+              backgroundColor: '#1976d2',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              opacity: loading || (!formData.email.trim() || !formData.password.trim()) ? 0.6 : 1,
+              fontSize: '16px',
+              fontWeight: '500'
+            }}
+          >
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
+        </form>
 
-            {/* Error Display */}
-            {error && (
-              <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 flex items-start gap-3 animate-slideDown">
-                <span className="text-2xl flex-shrink-0">⚠️</span>
-                <span className="text-red-700 font-medium">{error}</span>
-              </div>
-            )}
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={loading || !formData.email.trim() || !formData.password.trim()}
-              className="w-full py-3 bg-blue-600 text-white text-lg font-semibold rounded-xl hover:bg-blue-700 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:-translate-y-0.5 disabled:hover:translate-y-0"
-            >
-              {loading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  Anmeldung läuft...
-                </span>
-              ) : (
-                '🔐 Anmelden'
-              )}
-            </button>
-          </form>
-
-        </div>
-
-        {/* Info */}
-        <div className="mt-6 text-center">
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-            <p className="text-sm text-blue-700">
-              <span className="font-semibold">Demo-Anmeldedaten:</span><br />
-              E-Mail: <code className="font-mono bg-white px-1 rounded">admin@formbuilder.local</code><br />
-              Passwort: <code className="font-mono bg-white px-1 rounded">admin123</code>
-            </p>
+        {/* Demo Credentials */}
+        <div style={{
+          marginTop: '24px',
+          padding: '16px',
+          backgroundColor: '#e3f2fd',
+          borderRadius: '4px',
+          fontSize: '14px',
+          border: '1px solid #90caf9'
+        }}>
+          <strong style={{ color: '#1565c0' }}>Demo credentials:</strong><br />
+          <div style={{ marginTop: '8px', color: '#1976d2' }}>
+            <div><strong>Email:</strong> admin@formbuilder.local</div>
+            <div><strong>Password:</strong> admin123</div>
           </div>
         </div>
       </div>

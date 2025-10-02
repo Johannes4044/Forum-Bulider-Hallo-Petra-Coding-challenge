@@ -6,7 +6,8 @@ import { getFormForEdit, updateForm } from './actions'
 import FieldEditor from '@/app/builder/FieldEditor'
 import Link from 'next/link'
 import { LogoutButton } from '@/components/LogoutButton'
-import { Logo } from '@/components/Logo'
+import { SimpleLogo } from '@/components/SimpleLogo'
+
 
 type FieldType = 'TEXT' | 'EMAIL' | 'NUMBER' | 'DATE' | 'TEXTAREA' | 'SELECT' | 'RADIO' | 'CHECKBOX'
 
@@ -87,7 +88,7 @@ export default function EditFormPage() {
           description: field.description || '',
           type: field.type,
           required: field.required,
-          options: Array.isArray(field.options) ? field.options : [],
+          options: Array.isArray(field.options) ? field.options as string[] : [],
           placeholder: field.placeholder || '',
           min: field.min,
           max: field.max
@@ -238,17 +239,29 @@ export default function EditFormPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div style={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-xl border-b border-gray-100">
-        <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Logo size="md" />
-            <span className="text-xl font-bold text-gray-900">HalloPetra FormBuilder</span>
+      <nav style={{ backgroundColor: 'white', borderBottom: '1px solid #ddd', padding: '10px 20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <SimpleLogo size={32} />
+            <h1 style={{ margin: 0, fontSize: '20px' }}>HalloPetra FormBuilder - Edit Form</h1>
           </div>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-500 hidden sm:block">Formular bearbeiten</span>
-            <LogoutButton className="px-3 py-1 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-all" />
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+            <Link
+              href="/admin"
+              style={{
+                padding: '6px 12px',
+                backgroundColor: '#f5f5f5',
+                color: '#333',
+                textDecoration: 'none',
+                borderRadius: '4px',
+                fontSize: '14px'
+              }}
+            >
+              ← Admin
+            </Link>
+            <LogoutButton />
           </div>
         </div>
       </nav>

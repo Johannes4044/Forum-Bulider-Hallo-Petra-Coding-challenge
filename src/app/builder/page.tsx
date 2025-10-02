@@ -6,7 +6,8 @@ import { createForm } from './actions'
 import FieldEditor from './FieldEditor'
 import Link from 'next/link'
 import { LogoutButton } from '@/components/LogoutButton'
-import { Logo } from '@/components/Logo'
+import { SimpleLogo } from '@/components/SimpleLogo'
+
 
 type FieldType = 'TEXT' | 'EMAIL' | 'NUMBER' | 'DATE' | 'TEXTAREA' | 'SELECT' | 'RADIO' | 'CHECKBOX'
 
@@ -147,216 +148,218 @@ export default function FormBuilderPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div style={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
             {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-xl border-b border-gray-100">
-                <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <Logo size="md" />
-                        <span className="text-xl font-bold text-gray-900">HalloPetra FormBuilder</span>
+            <nav style={{ backgroundColor: 'white', borderBottom: '1px solid #ddd', padding: '10px 20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1200px', margin: '0 auto' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <SimpleLogo size={32} />
+                        <h1 style={{ margin: 0, fontSize: '20px' }}>HalloPetra FormBuilder</h1>
                     </div>
-                    <div className="flex items-center gap-4">
-                        <span className="text-sm text-gray-500 hidden sm:block">Formular erstellen</span>
+                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                         <Link
                             href="/admin"
-                            className="px-3 py-1 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-all"
+                            style={{
+                                padding: '6px 12px',
+                                backgroundColor: '#f5f5f5',
+                                color: '#333',
+                                textDecoration: 'none',
+                                borderRadius: '4px',
+                                fontSize: '14px'
+                            }}
                         >
-                            📊 Admin
+                            Admin
                         </Link>
-                        <LogoutButton className="px-3 py-1 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-all" />
+                        <LogoutButton />
                     </div>
                 </div>
             </nav>
 
-            <main className="pt-28 pb-12 px-6">
-                <div className="max-w-5xl mx-auto">
-                    {/* Header */}
-                    <div className="mb-8 animate-slideDown">
-                        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
-                            Neues Formular erstellen
-                        </h1>
-                        <p className="text-lg text-gray-600">
-                            Füge Felder hinzu und konfiguriere dein Formular
-                        </p>
+            <main style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
+                <h2 style={{ marginBottom: '20px' }}>Create New Form</h2>
+
+                <form onSubmit={handleSubmit}>
+                    {/* Basic Info */}
+                    <div style={{ backgroundColor: 'white', padding: '20px', border: '1px solid #ddd', borderRadius: '8px', marginBottom: '20px' }}>
+                        <h3 style={{ marginTop: 0, marginBottom: '15px' }}>Form Information</h3>
+
+                        <div style={{ marginBottom: '15px' }}>
+                            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+                                Title *
+                            </label>
+                            <input
+                                type="text"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}
+                                placeholder="e.g. Contact Form"
+                            />
+                        </div>
+
+                        <div style={{ marginBottom: '15px' }}>
+                            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+                                Description (optional)
+                            </label>
+                            <textarea
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}
+                                placeholder="Brief description of the form"
+                                rows={3}
+                            />
+                        </div>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* Basis-Info Card */}
-                        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8 animate-slideUp">
-                            <div className="flex items-center gap-4 mb-6">
-                                <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center">
-                                    <span className="text-3xl">✨</span>
-                                </div>
-                                <div>
-                                    <h2 className="text-xl font-bold text-gray-900">Formular-Informationen</h2>
-                                    <p className="text-sm text-gray-500">Grundlegende Details zu deinem Formular</p>
-                                </div>
-                            </div>
-
-                            <div className="space-y-5">
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-900 mb-2">
-                                        Titel <span className="text-red-500">*</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={title}
-                                        onChange={(e) => setTitle(e.target.value)}
-                                        className="input-base"
-                                        placeholder="z.B. Kontaktanfrage"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-900 mb-2">
-                                        Beschreibung (optional)
-                                    </label>
-                                    <textarea
-                                        value={description}
-                                        onChange={(e) => setDescription(e.target.value)}
-                                        className="input-base"
-                                        placeholder="Kurze Beschreibung des Formulars"
-                                        rows={3}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Felder Card */}
-                        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8 animate-slideUp" style={{ animationDelay: '0.1s' }}>
-                            <div className="flex items-center justify-between mb-6">
-                                <div>
-                                    <h2 className="text-xl font-bold text-gray-900">Formular-Felder</h2>
-                                    <p className="text-sm text-gray-500 mt-1">
-                                        {fields.length === 0 ? 'Noch keine Felder' : `${fields.length} ${fields.length === 1 ? 'Feld' : 'Felder'}`}
-                                    </p>
-                                </div>
-                                <button
-                                    type="button"
-                                    onClick={addField}
-                                    className="flex items-center gap-2 px-5 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 hover:shadow-lg hover:-translate-y-0.5 transition-all"
-                                >
-                                    <span className="text-xl leading-none">+</span>
-                                    <span>Feld hinzufügen</span>
-                                </button>
-                            </div>
-
-                            {fields.length === 0 ? (
-                                <button
-                                    type="button"
-                                    onClick={addField}
-                                    className="w-full py-20 border-2 border-dashed border-gray-300 rounded-2xl hover:border-blue-400 hover:bg-blue-50 transition-all group"
-                                >
-                                    <div className="text-6xl mb-4 group-hover:scale-110 transition-transform">📝</div>
-                                    <p className="text-lg font-semibold text-gray-900 mb-1">Noch keine Felder vorhanden</p>
-                                    <p className="text-gray-500">Klicke hier um dein erstes Feld hinzuzufügen</p>
-                                </button>
-                            ) : (
-                                <div className="space-y-3">
-                                    {fields.map((field, index) => (
-                                        <div
-                                            key={field.tempId}
-                                            className="group bg-gray-50 rounded-xl p-5 hover:bg-white hover:shadow-md border border-transparent hover:border-gray-200 transition-all"
-                                        >
-                                            <div className="flex items-start gap-4">
-                                                <div className="text-3xl flex-shrink-0 mt-1">{FIELD_ICONS[field.type]}</div>
-
-                                                <div className="flex-1 min-w-0">
-                                                    <div className="flex flex-wrap items-center gap-2 mb-2">
-                            <span className="font-bold text-gray-900 text-lg">
-                              {field.label || 'Unbenanntes Feld'}
-                            </span>
-                                                        <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
-                              {field.type}
-                            </span>
-                                                        {field.required && (
-                                                            <span className="px-2 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded-full">
-                                Pflicht
-                              </span>
-                                                        )}
-                                                    </div>
-                                                    <p className="text-sm text-gray-600 mb-1">
-                                                        Key: <code className="bg-gray-200 px-2 py-0.5 rounded text-xs font-mono">{field.key || 'kein-key'}</code>
-                                                    </p>
-                                                    {field.description && (
-                                                        <p className="text-sm text-gray-600 mt-2">{field.description}</p>
-                                                    )}
-                                                    {['SELECT', 'RADIO'].includes(field.type) && field.options.length > 0 && (
-                                                        <p className="text-xs text-gray-500 mt-2">
-                                                            {field.options.length} Option{field.options.length !== 1 && 'en'}
-                                                        </p>
-                                                    )}
-                                                </div>
-
-                                                <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => moveFieldUp(index)}
-                                                        disabled={index === 0}
-                                                        className="w-10 h-10 flex items-center justify-center hover:bg-gray-200 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition text-gray-700"
-                                                        title="Nach oben"
-                                                    >
-                                                        ↑
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => moveFieldDown(index)}
-                                                        disabled={index === fields.length - 1}
-                                                        className="w-10 h-10 flex items-center justify-center hover:bg-gray-200 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition text-gray-700"
-                                                        title="Nach unten"
-                                                    >
-                                                        ↓
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => setEditingField(field)}
-                                                        className="w-10 h-10 flex items-center justify-center hover:bg-blue-100 text-blue-600 rounded-lg transition"
-                                                        title="Bearbeiten"
-                                                    >
-                                                        ✏️
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => deleteField(field.tempId)}
-                                                        className="w-10 h-10 flex items-center justify-center hover:bg-red-100 text-red-600 rounded-lg transition"
-                                                        title="Löschen"
-                                                    >
-                                                        🗑️
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-
-                        {error && (
-                            <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 flex items-start gap-3 animate-slideDown">
-                                <span className="text-2xl flex-shrink-0">⚠️</span>
-                                <span className="text-red-700 font-medium">{error}</span>
-                            </div>
-                        )}
-
-                        {/* Action Buttons */}
-                        <div className="flex flex-col sm:flex-row gap-4 animate-slideUp" style={{ animationDelay: '0.2s' }}>
-                            <button
-                                type="submit"
-                                disabled={isSubmitting}
-                                className="flex-1 py-4 bg-green-600 text-white text-lg font-bold rounded-xl hover:bg-green-700 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:-translate-y-0.5 disabled:hover:translate-y-0"
-                            >
-                                {isSubmitting ? '⏳ Wird erstellt...' : '✓ Formular erstellen'}
-                            </button>
+                    {/* Fields */}
+                    <div style={{ backgroundColor: 'white', padding: '20px', border: '1px solid #ddd', borderRadius: '8px', marginBottom: '20px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                            <h3 style={{ margin: 0 }}>Form Fields ({fields.length})</h3>
                             <button
                                 type="button"
-                                onClick={() => router.push('/admin')}
-                                className="sm:w-auto px-8 py-4 bg-white border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all"
+                                onClick={addField}
+                                style={{
+                                    padding: '8px 16px',
+                                    backgroundColor: '#1976d2',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    cursor: 'pointer'
+                                }}
                             >
-                                Abbrechen
+                                + Add Field
                             </button>
                         </div>
-                    </form>
-                </div>
+
+                        {fields.length === 0 ? (
+                            <div style={{ textAlign: 'center', padding: '40px', border: '2px dashed #ddd', borderRadius: '8px' }}>
+                                <p>No fields yet. Click "Add Field" to create your first field.</p>
+                            </div>
+                        ) : (
+                            <div style={{ display: 'grid', gap: '10px' }}>
+                                {fields.map((field, index) => (
+                                    <div
+                                        key={field.tempId}
+                                        style={{ backgroundColor: '#f9f9f9', padding: '15px', borderRadius: '4px', border: '1px solid #ddd' }}
+                                    >
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
+                                            <div style={{ flex: 1 }}>
+                                                <h4 style={{ margin: 0, marginBottom: '5px' }}>
+                                                    {field.label || 'Unnamed Field'} ({field.type})
+                                                    {field.required && <span style={{ color: '#d32f2f' }}> *</span>}
+                                                </h4>
+                                                <p style={{ margin: 0, fontSize: '14px', color: '#666' }}>
+                                                    Key: {field.key || 'no-key'}
+                                                </p>
+                                                {field.description && (
+                                                    <p style={{ margin: '5px 0 0 0', fontSize: '14px', color: '#666' }}>{field.description}</p>
+                                                )}
+                                            </div>
+                                            <div style={{ display: 'flex', gap: '5px' }}>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => moveFieldUp(index)}
+                                                    disabled={index === 0}
+                                                    style={{
+                                                        padding: '5px',
+                                                        border: '1px solid #ccc',
+                                                        backgroundColor: 'white',
+                                                        borderRadius: '4px',
+                                                        cursor: index === 0 ? 'not-allowed' : 'pointer',
+                                                        opacity: index === 0 ? 0.5 : 1
+                                                    }}
+                                                >
+                                                    ↑
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => moveFieldDown(index)}
+                                                    disabled={index === fields.length - 1}
+                                                    style={{
+                                                        padding: '5px',
+                                                        border: '1px solid #ccc',
+                                                        backgroundColor: 'white',
+                                                        borderRadius: '4px',
+                                                        cursor: index === fields.length - 1 ? 'not-allowed' : 'pointer',
+                                                        opacity: index === fields.length - 1 ? 0.5 : 1
+                                                    }}
+                                                >
+                                                    ↓
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setEditingField(field)}
+                                                    style={{
+                                                        padding: '5px 8px',
+                                                        border: '1px solid #1976d2',
+                                                        backgroundColor: '#1976d2',
+                                                        color: 'white',
+                                                        borderRadius: '4px',
+                                                        cursor: 'pointer'
+                                                    }}
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => deleteField(field.tempId)}
+                                                    style={{
+                                                        padding: '5px 8px',
+                                                        border: '1px solid #d32f2f',
+                                                        backgroundColor: '#d32f2f',
+                                                        color: 'white',
+                                                        borderRadius: '4px',
+                                                        cursor: 'pointer'
+                                                    }}
+                                                >
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    {error && (
+                        <div style={{ backgroundColor: '#ffebee', border: '1px solid #f44336', padding: '10px', borderRadius: '4px', marginBottom: '20px', color: '#d32f2f' }}>
+                            {error}
+                        </div>
+                    )}
+
+                    {/* Action Buttons */}
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            style={{
+                                padding: '12px 24px',
+                                backgroundColor: '#4caf50',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '4px',
+                                cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                                opacity: isSubmitting ? 0.6 : 1
+                            }}
+                        >
+                            {isSubmitting ? 'Creating...' : 'Create Form'}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => router.push('/admin')}
+                            style={{
+                                padding: '12px 24px',
+                                backgroundColor: '#f5f5f5',
+                                color: '#333',
+                                border: '1px solid #ccc',
+                                borderRadius: '4px',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </form>
             </main>
 
             {editingField && (

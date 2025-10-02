@@ -5,7 +5,8 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { getFormSubmissions, deleteSubmission, exportSubmissions } from './actions'
 import { LogoutButton } from '@/components/LogoutButton'
-import { Logo } from '@/components/Logo'
+import { SimpleLogo } from '@/components/SimpleLogo'
+
 
 type FormSubmission = {
   id: string
@@ -140,22 +141,29 @@ export default function FormSubmissionsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div style={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-xl border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Logo size="md" />
-            <span className="text-xl font-bold text-gray-900">HalloPetra FormBuilder</span>
+      <nav style={{ backgroundColor: 'white', borderBottom: '1px solid #ddd', padding: '10px 20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <SimpleLogo size={32} />
+            <h1 style={{ margin: 0, fontSize: '20px' }}>HalloPetra FormBuilder - Submissions</h1>
           </div>
-          <div className="flex items-center gap-4">
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <Link
               href="/admin"
-              className="text-sm text-gray-500 hover:text-gray-700 transition"
+              style={{
+                padding: '6px 12px',
+                backgroundColor: '#f5f5f5',
+                color: '#333',
+                textDecoration: 'none',
+                borderRadius: '4px',
+                fontSize: '14px'
+              }}
             >
-              ← Admin-Übersicht
+              ← Admin
             </Link>
-            <LogoutButton className="px-3 py-1 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-all" />
+            <LogoutButton />
           </div>
         </div>
       </nav>

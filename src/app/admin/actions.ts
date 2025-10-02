@@ -89,7 +89,7 @@ export async function duplicateForm(formId: string) {
             type: field.type,
             order: field.order,
             required: field.required,
-            options: field.options,
+            options: field.options as any,
             placeholder: field.placeholder,
             min: field.min,
             max: field.max
