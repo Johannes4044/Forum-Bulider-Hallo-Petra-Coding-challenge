@@ -11,8 +11,8 @@ Eine moderne Formular-Builder-Anwendung mit schönem UI.
 
 1. Repository klonen
 ```bash
-git clone <your-repo-url>
-cd hp-codeing-challenge-johannes
+git clone https://github.com/Johannes4044/Forum-Bulider-Hallo-Petra-Coding-challenge.git
+cd Forum-Bulider-Hallo-Petra-Coding-challenge
 ```
 
 2. Anwendung starten
