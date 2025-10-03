@@ -15,8 +15,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Create empty public directory if it doesn't exist
-RUN mkdir -p public
+
 
 # Generate Prisma Client
 RUN npx prisma generate
@@ -32,8 +31,6 @@ ENV NODE_ENV production
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
-
-COPY --from=builder /app/public ./public
 
 # Set the correct permission for prerender cache
 RUN mkdir .next
