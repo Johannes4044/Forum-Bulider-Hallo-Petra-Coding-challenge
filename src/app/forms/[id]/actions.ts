@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma'
 
 export async function submitForm(
     formId: string,
-    data: Record<string, string>
+    data: Record<string, string | boolean>
 ) {
     try {
         // Formular-Submission in der Datenbank speichern

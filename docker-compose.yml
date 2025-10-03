@@ -1,7 +1,4 @@
-version: '3.8'
-
 services:
-  # PostgreSQL Database
   db:
     image: postgres:15-alpine
     restart: always
@@ -11,30 +8,22 @@ services:
       POSTGRES_PASSWORD: formbuilder123
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U formbuilder"]
       interval: 5s
       timeout: 5s
       retries: 5
 
-  # Main Application
   app:
     build: .
     ports:
       - "3000:3000"
     environment:
       - DATABASE_URL=postgresql://formbuilder:formbuilder123@db:5432/formbuilder
-      - NEXTAUTH_URL=http://localhost:3000
-      - NEXTAUTH_SECRET=your-super-secret-jwt-secret-change-in-production
-      - ADMIN_EMAIL=admin@formbuilder.local
-      - ADMIN_PASSWORD=admin123
+      - NODE_ENV=production
     depends_on:
       db:
         condition: service_healthy
-    volumes:
-      - ./prisma:/app/prisma
     restart: unless-stopped
 
 volumes:
